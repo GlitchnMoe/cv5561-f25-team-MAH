@@ -3,7 +3,7 @@
 
 Team Members:
 
-Mohamed Khalil - khali178@umn.edu (Developer)
+Mohamed Khalil - khali178@umn.edu (Developer) (Coordinator)
 
 Aaron Castle - castl145@umn.edu (Developer)
 
