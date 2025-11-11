@@ -1,0 +1,167 @@
+�ò�%�i�
+       P^��z%E<��@@ϙ��
+                      ��
+                        �\Pw���������
+��!�%�i��
+         ^��z%E<��@@ϙ��
+                       ��
+                         �\Pw�������C
+��!�%�i�
+        ^�<[�E<@@�f��
+                     ��
+                       P�\�Q�kw��Ѡ����
+8��c��!�%�i4
+            P^�<[�E<@@�f��
+                          ��
+                            P�\�Q�kw��Ѡ����
+8��c��!�%�iQ
+            H^��z%E4��@@Ϡ��
+                           ��
+                             �\Pw��ѼQ�l����
+��!�8��c%�i�
+            �^��z%E���@@�S��
+                            ��
+                              �\Pw��ѼQ�l��%e
+��!�8��cGET /1 HTTP/1.1
+Host: 192.168.11.2
+User-Agent: curl/8.5.0
+Accept: */*
+
+%�i 
+    ^��z%E4��@@Ϡ��
+                  ��
+                    �\Pw��ѼQ�l����
+��!�8��c%�iD!
+             ^��z%E���@@�S��
+                            ��
+                              �\Pw��ѼQ�l��%e
+��!�8��cGET /1 HTTP/1.1
+Host: 192.168.11.2
+User-Agent: curl/8.5.0
+Accept: */*
+
+%�i8"
+     ^�<[�E4��@@����
+                    ��
+                      P�\�Q�lw�����P
+8��d��!�%�iV"
+             H^�<[�E4��@@����
+                             ��
+                               P�\�Q�lw�����P
+8��d��!�%�iI'
+             ^�<[�E<�d@@���
+                           ��
+<�����                       ��Ph"
+���;%�i�'
+         ^xϴ��E<@@�h��
+                      ��
+=����1                  P��O��sh"
+���T���;%�i�)
+             ^�<[�E4�e@@�
+��
+  ��
+=O��t����
+���<���T%�i�)
+             ^�<[�ET�f@@����
+                            ��
+=O��t���1                     ��Ph"
+���<���THEAD /secret/file.php HTTP/1.0
+%�i/+
+     ^xϴ��E4}#@@&M��
+                    ��
+]����                 P��O��th"
+���T���<%�i�,
+             ^�<[�E��g@@����
+                            ��
+]O��t��?                      ��Ph"
+���=���THost: 192.168.11.1
+Connection: close
+Accept-language: en
+Authorization: Basic dHJhdmlzMTE6bWFpdkRlY2d1cjI0MDE=
+
+%�i�.
+     ^xϴ��E4}$@@&L��
+                    ��
+Ҁ��Z                  P��O��th"
+���U���=%�i�/
+             ^xϴ��E�}%@@%���
+                            ��
+Ҁ�a]                          P��O��th"
+���U���=HTTP/1.1 403 Forbidden
+Date: Tue, 11 Nov 2025 19:19:01 GMT
+Server: Apache/2.4.58 (Ubuntu)
+Connection: close
+Content-Type: text/html; charset=iso-8859-1
+
+%�i�/
+     ^xϴ��E4}&@@&J��
+                    ��
+Ҁ���                  P��O��h"
+���U���=%�iG1
+             ^�<[�E4�h@@���
+                           ��
+�O������                     ��Ph"
+���>���U%�iL1
+             ^�<[�E4�i@@���
+                           ��
+�O������                     ��Ph"
+���>���U%�i�1
+             ^�<[�E���@@�-��
+                            ��
+                              P�\�Q�lw����V�
+8��h��!�HTTP/1.1 200 OK
+Date: Tue, 11 Nov 2025 19:19:01 GMT
+Server: Apache/2.4.58 (Ubuntu)
+Content-Length: 15
+Content-Type: text/html; charset=UTF-8
+
+Authenticated!
+2�i
+ �^�<[�E���@@�-��
+                 ��
+                   P�\�Q�lw����V�
+8��h��!�HTTP/1.1 200 OK
+Date: Tue, 11 Nov 2025 19:19:01 GMT
+Server: Apache/2.4.58 (Ubuntu)
+Content-Length: 15
+Content-Type: text/html; charset=UTF-8
+
+Authenticated!
+%�i 2
+     H^��z%E4��@@Ϟ��
+                    ��
+                      �\Pw���Q�����
+��!�8��h%�i�2
+             H^��z%E4��@@ϝ��
+                            ��
+                              �\Pw���Q�����
+��!�8��h%�i]6
+             H^�<[�E4��@@����
+                             ��
+                               P�\�Q�w������
+8��i��!�%�im6
+             H^��z%E4��@@Ϝ��
+                            ��
+                              �\Pw���Q�����
+��!�8��i%�i�6
+             ^xϴ��E4}'@@&I��
+                            ��
+Ӏ���                          P��O��h"
+���V���>%�i�6
+             ^��z%E4��@@Ϟ��
+                           ��
+                             �\Pw���Q�����
+��!�8��h%�i�6
+             ^��z%E4��@@ϝ��
+                           ��
+                             �\Pw���Q�����
+��!�8��h%�i�6
+             ^�<[�E4��@@����
+                            ��
+                              P�\�Q�w������
+8��i��!�%�i�7
+             ^��z%E4��@@Ϝ��
+                           ��
+                             �\Pw���Q�����
+
+curl -u "usr:psswd" http://$SERVER/secret/file
