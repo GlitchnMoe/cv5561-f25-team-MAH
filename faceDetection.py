@@ -1,8 +1,8 @@
 from ultralytics import YOLO
 import cv2
-import torch
+# import torch
 
-face_detector = YOLO("yolov8n.pt")
+face_detector = YOLO("yolov8n-face.pt")
 
 gender_model = YOLO("y8n_agegender_gender3/weights/best.pt")
 emotion_model = YOLO("y8n_emotion/y8n_emotion/weights/best.pt")
@@ -21,9 +21,9 @@ while True:
 
     for r in results:
         for box in r.boxes:
-            cls = int(box.cls)
-            if r.names[cls] != "person":
-                continue
+            # cls = int(box.cls)
+            # if r.names[cls] != "person":
+            #     continue
 
             x1, y1, x2, y2 = map(int, box.xyxy[0])
 
