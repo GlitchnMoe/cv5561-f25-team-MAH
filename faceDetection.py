@@ -1,5 +1,6 @@
 from ultralytics import YOLO
 import cv2
+import torch
 
 face_detector = YOLO("yolov8n.pt")
 
@@ -16,9 +17,14 @@ while True:
         break
 
     results = face_detector(frame, stream=True)
+    
 
     for r in results:
         for box in r.boxes:
+            cls = int(box.cls)
+            if r.names[cls] != "person":
+                continue
+
             x1, y1, x2, y2 = map(int, box.xyxy[0])
 
             face = frame[y1:y2, x1:x2]
