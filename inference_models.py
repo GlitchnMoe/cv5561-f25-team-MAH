@@ -3,6 +3,11 @@ import torchvision.transforms as T
 from models_common import *  # or import specific model classes
 from datasets_fer2013 import EMOTIONS
 
+#Global variables for smoothing
+smooth_age = None
+smooth_gender = None
+smooth_expr = None
+
 # Pick device (Apple Silicon, CUDA, or CPU)
 if torch.backends.mps.is_available():
     device = torch.device("mps")
@@ -71,6 +76,8 @@ age_model, gender_model, expr_model = load_models()
 # face_np: numpy array (H, W, 3) RGB uint8
 
 def predict_all(face_np):
+    global smooth_age, smooth_gender, smooth_expr
+    
     # face_np: (H, W, 3), RGB uint8
 
     # Apply transforms (Resize, Normalize, etc.)
@@ -82,16 +89,31 @@ def predict_all(face_np):
         gender_out = gender_model(x)    # (1,2)
         expr_out = expr_model(x)        # (1,7)
 
-    # ----- Age -----
+    # ----- Age with smoothing -----
     age = age_out.item()
-    age = round(float(age))             # round to integer for display
+    alpha = 0.3  # smoothing factor
+    if smooth_age is None:
+        smooth_age = age
+    else:
+        smooth_age = alpha * age + (1 - alpha) * smooth_age
+    age = round(float(smooth_age))
 
-    # ----- Gender -----
-    g_idx = gender_out.argmax(1).item()
+    # ----- Gender with smoothing -----
+    g_probs = torch.softmax(gender_out, dim=1)[0]  # (2,)
+    if smooth_gender is None:
+        smooth_gender = g_probs.cpu().numpy()
+    else:
+        smooth_gender = alpha * g_probs.cpu().numpy() + (1 - alpha) * smooth_gender
+    g_idx = smooth_gender.argmax()
     gender = "Male" if g_idx == 0 else "Female"
 
-    # ----- Expression -----
-    e_idx = expr_out.argmax(1).item()
+    # ----- Expression with smoothing -----
+    e_probs = torch.softmax(expr_out, dim=1)[0]  # (7,)
+    if smooth_expr is None:
+        smooth_expr = e_probs.cpu().numpy()
+    else:
+        smooth_expr = alpha * e_probs.cpu().numpy() + (1 - alpha) * smooth_expr
+    e_idx = smooth_expr.argmax()
     expr = EMOTIONS[e_idx]
 
     return age, gender, expr

@@ -1,12 +1,17 @@
 import cv2
 import os
 from inference_models import predict_all
+import time
+
 
 # =========================
 # Config
 # =========================
 TARGET_SIZE = (224, 224)  # change if your friend's model uses different size
 
+
+alpha = 0.2   # smoothing factor (lower = smoother)
+FPS_LIMIT = 10  # Target frame rate
 
 # =========================
 # Preprocessing
@@ -68,6 +73,10 @@ def main():
 
     print("Press 'q' to quit.")
 
+    # Frame rate control
+    frame_time = 1.0 / FPS_LIMIT
+    prev_time = time.time()
+
     while True:
         ret, frame = cap.read()
         if not ret:
@@ -111,14 +120,20 @@ def main():
                 label,
                 (text_x, text_y),
                 cv2.FONT_HERSHEY_SIMPLEX,
-                0.5,
+                0.9,
                 (0, 255, 0),
-                1,
+                2,
                 cv2.LINE_AA
             )
 
         # 7. Show result
         cv2.imshow("Live Age/Gender/Expression Demo (Mock)", frame)
+
+        # Frame rate limiting
+        elapsed = time.time() - prev_time
+        if elapsed < frame_time:
+            time.sleep(frame_time - elapsed)
+        prev_time = time.time()
 
         # Exit on 'q'
         if cv2.waitKey(1) & 0xFF == ord("q"):
