@@ -35,9 +35,14 @@ transform = T.Compose([
 # TODO: replace AgeModelClass / GenderModelClass / ExprModelClass
 # with the actual class names from models_common.py
 
-# Paths to your trained checkpoints
-age_ckpt     = "ckpts_age_r18/age_best.pth"
-gender_ckpt  = "ckpts_gender_r18/gender_best.pth"
+# Paths to trained checkpoints
+# age_ckpt     = "ckpts_age_r18/age_best.pth"
+# gender_ckpt  = "ckpts_gender_r18/gender_best.pth"
+
+# Path to updated weights
+age_ckpt     = "updatedWeights/age_best.pth"
+gender_ckpt  = "updatedWeights/gender_best.pth"
+
 expr_ckpt    = "ckpts_expr_r18/expr_best.pth"
 
 def load_models(device=None):
