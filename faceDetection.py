@@ -36,26 +36,12 @@ while True:
             gender_idx = g_probs.top1
             gender_label = g_result[0].names[gender_idx]
             gender_conf = g_probs.top1conf
-            # g_pred = gender_model(face_resized)[0]
-            # gender_label = "Unknown"
-            # if len(g_pred.boxes) > 0:
-            #     best = g_pred.boxes[0]
-            #     g_cls = int(best.cls)
-            #     g_conf = float(best.conf)
-            #     gender_label = f"{gender_model.names[g_cls]} {g_conf:.2f}"
 
             e_res = emotion_model(face_resized)
             e_probs = e_res[0].probs
             e_idx = e_probs.top1
             e_label = e_res[0].names[e_idx]
             e_conf = e_probs.top1conf
-            # e_pred = emotion_model(face_resized)[0]
-            # emotion_label = "Unknown"
-            # if len(e_pred.boxes) > 0:
-            #     best = e_pred.boxes[0]
-            #     e_cls = int(best.cls)
-            #     e_conf = float(best.conf)
-            #     emotion_label = f"{emotion_model.names[e_cls]} {e_conf:.2f}"
 
             label = f"{gender_label} | {e_label}"
 
