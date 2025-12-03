@@ -1,11 +1,9 @@
 from flask import Flask, render_template, Response
 from ultralytics import YOLO
 import cv2
-import torch
-import torch.nn as nn
-import torchvision.transforms as transforms
-from PIL import Image
-import numpy as np
+import os
+from inference_models import predict_all
+import threading
 
 app = Flask(__name__)
 
@@ -13,15 +11,55 @@ face_detector = YOLO("yolov8n-face.pt")
 gender_model = YOLO("y8n_agegender_gender20/weights/best.pt")
 emotion_model = YOLO("y8n_emotion19/weights/best.pt")
 
-IMG_SIZE = 224
+script_dir = os.path.dirname(os.path.abspath(__file__))
+haar_path = os.path.join(script_dir, "haarcascade_frontalface_default.xml")
+face_cascade = cv2.CascadeClassifier(haar_path)
 
-def generate_yolo_frames():
+IMG_SIZE = 224
+TARGET_SIZE = (224, 224)
+
+cap = None
+lock = threading.Lock()
+current_frame = None
+
+def capture_frames():
+    global cap, current_frame
     cap = cv2.VideoCapture(0)
     
     while True:
         ret, frame = cap.read()
-        if not ret:
-            break
+        if ret:
+            with lock:
+                current_frame = frame.copy()
+
+def get_frame():
+    with lock:
+        if current_frame is not None:
+            return current_frame.copy()
+    return None
+
+def preprocess_face(frame, box):
+    x, y, w, h = box
+    h_frame, w_frame, _ = frame.shape
+    x = max(0, x)
+    y = max(0, y)
+    w = min(w, w_frame - x)
+    h = min(h, h_frame - y)
+
+    face = frame[y:y + h, x:x + w]
+    if face.size == 0:
+        return None
+
+    face = cv2.resize(face, TARGET_SIZE)
+    face = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
+
+    return face
+
+def generate_yolo_frames():
+    while True:
+        frame = get_frame()
+        if frame is None:
+            continue
 
         results = face_detector(frame, stream=True)
 
@@ -47,9 +85,9 @@ def generate_yolo_frames():
 
                 label = f"{gender_label} | {e_label}"
 
-                cv2.rectangle(frame, (x1, y1), (x2, y2), (255, 0, 0), 2)
+                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
                 cv2.putText(frame, label, (x1, y1 - 10),
-                           cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 0, 0), 2)
+                           cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
 
         ret, buffer = cv2.imencode('.jpg', frame)
         frame_bytes = buffer.tobytes()
@@ -57,11 +95,49 @@ def generate_yolo_frames():
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
 
-    cap.release()
-
 def generate_cnn_frames():
-    return
+    while True:
+        frame = get_frame()
+        if frame is None:
+            continue
 
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+        faces = face_cascade.detectMultiScale(
+            gray,
+            scaleFactor=1.3,
+            minNeighbors=5,
+            minSize=(60, 60)
+        )
+
+        for (x, y, w, h) in faces:
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+            face_arr = preprocess_face(frame, (x, y, w, h))
+            if face_arr is None:
+                continue
+
+            age, gender, expr = predict_all(face_arr)
+
+            label = f"{age}, {gender}, {expr}"
+
+            text_x, text_y = x, max(0, y - 10)
+            cv2.putText(
+                frame,
+                label,
+                (text_x, text_y),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.9,
+                (0, 255, 0),
+                2,
+                cv2.LINE_AA
+            )
+
+        ret, buffer = cv2.imencode('.jpg', frame)
+        frame_bytes = buffer.tobytes()
+
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
 
 @app.route('/')
 def index():
@@ -78,4 +154,8 @@ def cnn_feed():
                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
-    app.run(debug=True, threaded=True)
+    # Start camera capture thread
+    camera_thread = threading.Thread(target=capture_frames, daemon=True)
+    camera_thread.start()
+    
+    app.run(debug=True, threaded=True, use_reloader=False)
