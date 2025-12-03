@@ -1,9 +1,10 @@
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, request, jsonify
 from ultralytics import YOLO
 import cv2
 import os
 from inference_models import predict_all
 import threading
+import json
 
 app = Flask(__name__)
 
@@ -153,8 +154,36 @@ def cnn_feed():
     return Response(generate_cnn_frames(),
                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
+
+try:
+    with open('votes.json', 'r') as f:
+        votes = json.load(f)
+except FileNotFoundError:
+    votes = {"yolo_votes": 0, "cnn_votes": 0}
+
+@app.route('/vote', methods=['POST'])
+def vote():
+    data = request.get_json()
+    model = data.get('model')
+
+    model += "_votes"
+    
+    if model in votes:
+        votes[model] += 1
+
+        with open('votes.json', 'w') as f:
+            json.dump(votes, f)
+
+    return jsonify({
+        'yolo_votes': votes['yolo_votes'],
+        'cnn_votes': votes['cnn_votes']
+    })
+
+@app.route('/votes', methods=['GET'])
+def get_votes():
+    return jsonify(votes)
+
 if __name__ == '__main__':
-    # Start camera capture thread
     camera_thread = threading.Thread(target=capture_frames, daemon=True)
     camera_thread.start()
     

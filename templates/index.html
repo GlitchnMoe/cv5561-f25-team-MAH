@@ -11,6 +11,14 @@
             display: flex;
             gap: 20px;
         }
+        .text-container {
+            display:flex;
+        }
+        .text-container h1 {
+            text-align: center;
+            width: 100%;
+        }
+
         .feed {
             flex: 1;
         }
@@ -21,6 +29,31 @@
         h3 {
             margin: 0 0 10px 0;
         }
+        .vote-section {
+            margin-top: 10px;
+            text-align: center;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .vote-count {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -28,11 +61,47 @@
         <div class="feed">
             <h3>YOLO Model</h3>
             <img src="{{ url_for('yolo_feed') }}">
+            <div class="vote-section">
+                <button onclick="vote('yolo')" id="yolo-btn">Vote for YOLO</button>
+                <div class="vote-count" id="yolo-count">Votes: 0</div>
+            </div>
         </div>
         <div class="feed">
             <h3>CNN Model</h3>
             <img src="{{ url_for('cnn_feed') }}">
+            <div class="vote-section">
+                <button onclick="vote('cnn')" id="cnn-btn">Vote for CNN</button>
+                <div class="vote-count" id="cnn-count">Votes: 0</div>
+            </div>
         </div>
     </div>
+
+    <div class="text-container">
+        <h1>Vote for your favorite!</h1>
+    </div>
+
+    <script>
+        function vote(model) {
+            fetch('/vote', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ model: model })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('yolo-count').textContent = 'Votes: ' + data.yolo_votes;
+                document.getElementById('cnn-count').textContent = 'Votes: ' + data.cnn_votes;
+            });
+        }
+
+        fetch('/votes')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('yolo-count').textContent = 'Votes: ' + data.yolo_votes;
+                document.getElementById('cnn-count').textContent = 'Votes: ' + data.cnn_votes;
+            });
+    </script>
 </body>
 </html>
