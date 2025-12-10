@@ -1,3 +1,6 @@
+import sys, os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import cv2
 import os
 from helper_models.inference_models import predict_all
@@ -7,7 +10,7 @@ import time
 # =========================
 # Config
 # =========================
-TARGET_SIZE = (224, 224)  # change if your friend's model uses different size
+TARGET_SIZE = (224, 224)  
 
 
 alpha = 0.2   # smoothing factor (lower = smoother)
@@ -62,8 +65,7 @@ def main():
 
     # 2. Load Haar Cascade for face detection
     # Get script directory
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    haar_path = os.path.join(script_dir, "haarcascade_frontalface_default.xml")
+    haar_path = "helper_models/haarcascade_frontalface_default.xml"
 
     # Load Haar Cascade
     face_cascade = cv2.CascadeClassifier(haar_path)
