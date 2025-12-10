@@ -2,18 +2,18 @@ from flask import Flask, render_template, Response, request, jsonify
 from ultralytics import YOLO
 import cv2
 import os
-from inference_models import predict_all
+from helper_models.inference_models import predict_all
 import threading
 import json
 
 app = Flask(__name__)
 
-face_detector = YOLO("yolov8n-face.pt")
-gender_model = YOLO("y8n_agegender_gender20/weights/best.pt")
-emotion_model = YOLO("y8n_emotion19/weights/best.pt")
+face_detector = YOLO("helper_models/yolov8n-face.pt")
+gender_model = YOLO("training_files/YOLO/y8n_agegender_gender20/weights/best.pt")
+emotion_model = YOLO("training_files/YOLO/y8n_emotion19/weights/best.pt")
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
-haar_path = os.path.join(script_dir, "haarcascade_frontalface_default.xml")
+haar_path = os.path.join(script_dir, "helper_models/haarcascade_frontalface_default.xml")
 face_cascade = cv2.CascadeClassifier(haar_path)
 
 IMG_SIZE = 224

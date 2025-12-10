@@ -32,21 +32,16 @@ while True:
             face_resized = cv2.resize(face, (IMG_SIZE, IMG_SIZE))
 
             g_result = gender_model(face_resized)
+            g_probs = g_result[0].probs
+            g_idx = g_probs.top1
+            gender_label = g_result[0].names[g_idx]
 
-            # The gender model is ALSO a detection model → loop through gender boxes
-            for g_r in g_result:
-                for g_box in g_r.boxes:
-                    g_cls = int(g_box.cls[0])
-                    g_conf = float(g_box.conf[0])
 
-                    # If your model has class names:
-                    gender_label = gender_model.names[g_cls]
 
             e_res = emotion_model(face_resized)
             e_probs = e_res[0].probs
             e_idx = e_probs.top1
             e_label = e_res[0].names[e_idx]
-            e_conf = e_probs.top1conf
 
             label = f"{gender_label} | {e_label}"
 

@@ -1,7 +1,7 @@
 import torch
 import torchvision.transforms as T
-from models_common import *  # or import specific model classes
-from datasets_fer2013 import EMOTIONS
+from helper_models.models_common import *  # or import specific model classes
+from training_files.datasets_fer2013 import EMOTIONS
 
 #Global variables for smoothing
 smooth_age = None
@@ -36,9 +36,9 @@ transform = T.Compose([
 # with the actual class names from models_common.py
 
 # Paths to your trained checkpoints
-age_ckpt     = "ckpts_age_r18/age_best.pth"
-gender_ckpt  = "ckpts_gender_r18/gender_best.pth"
-expr_ckpt    = "ckpts_expr_r18/expr_best.pth"
+age_ckpt     = "training_files/cnn/ckpts_age_r18/age_best.pth"
+gender_ckpt  = "training_files/cnn/ckpts_gender_r18/gender_best.pth"
+expr_ckpt    = "training_files/cnn/ckpts_expr_r18/expr_best.pth"
 
 def load_models(device=None):
     if device is None:
