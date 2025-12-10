@@ -45,4 +45,3 @@ Are present in which they both can be ran by the command: `python3 <file_name>` 
 
 ## Training models
 Go to the `training_files` folder and follow the readme to train a model.
->>>>>>> website
