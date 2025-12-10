@@ -1,6 +1,6 @@
 import cv2
 import os
-from ..inference_models import predict_all
+from helper_models.inference_models import predict_all
 import time
 
 
