@@ -9,3 +9,6 @@ triton==3.5.1
 
 ultralytics==8.3.234
 ultralytics-thop==2.0.18
+
+
+Flask==3.1.2
