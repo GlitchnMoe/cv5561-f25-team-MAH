@@ -1,0 +1,30 @@
+# requirements.txt
+
+# --- PyTorch CUDA 12.1 wheels ---
+# (PyTorch’s official instructions use the cu121 index for CUDA 12.1 wheels)
+--extra-index-url https://download.pytorch.org/whl/cu121
+torch==2.5.1+cu121
+torchvision==0.20.1+cu121
+torchaudio==2.5.1+cu121
+
+# --- Core ---
+numpy==2.2.6
+Pillow
+tqdm==4.67.1
+
+# --- Data / plotting ---
+matplotlib==3.10.7
+pandas==2.3.3
+polars==1.35.1
+scipy==1.15.3
+
+# --- Computer vision / YOLO ---
+# Pick ONE of these OpenCV packages (don’t install both):
+opencv-python-headless==4.12.0.88
+# opencv-python==4.12.0.88
+
+ultralytics==8.3.225
+ultralytics-thop==2.0.18
+
+PyYAML
+requests
