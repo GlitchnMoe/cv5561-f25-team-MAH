@@ -10,7 +10,7 @@ Aaron Castle - castl145@umn.edu (Developer)
 
 Hieu Le - le000515@umn.edu (Developer)
 
-<<<<<<< HEAD
+
 =======
 # Environment setup
 
