@@ -45,3 +45,18 @@ Are present in which they both can be ran by the command: `python3 <file_name>` 
 
 ## Training models
 Go to the `training_files` folder and follow the readme to train a model.
+
+---
+# Motivating papers and References:
+
+Smart Facial Emotion Recognition With Gender and Age Factor Estimation - https://www.sciencedirect.com/science/article/pii/S1877050922025017?via%3Dihub
+
+Real-Time age, gender and emotion detection using YOLOv - https://www.itm-conferences.org/articles/itmconf/pdf/2025/05/itmconf_iccp-ci2024_01015.pdf
+
+ResNet18 - https://docs.pytorch.org/vision/main/models/generated/torchvision.models.resnet18.html
+
+YOLOv8 - https://yolov8.com/
+
+YOLOv8 Git - https://github.com/ultralytics/ultralytics
+
+---
